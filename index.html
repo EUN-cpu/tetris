@@ -3,6 +3,7 @@
 <head>
   <title>직트리스 ver2.1</title>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <style>
   html, body {
     height: 100%;
@@ -468,7 +469,8 @@ document.getElementById('right').addEventListener('click', function() {
   }
 });
 
-document.getElementById('rotate').addEventListener('click', function() {
+document.getElementById('rotate').addEventListener('click', function(e) {
+  e.preventDefault(); // 기본 동작 방지
   if (gameOver) return;
   const rotated = rotate(tetromino.matrix);
   if (isValidMove(rotated, tetromino.row, tetromino.col)) {
@@ -476,12 +478,22 @@ document.getElementById('rotate').addEventListener('click', function() {
   }
 });
 
-document.getElementById('drop').addEventListener('click', function() {
+document.getElementById('drop').addEventListener('click', function(e) {
+  e.preventDefault(); // 기본 동작 방지
   if (gameOver) return;
   tetromino.row++;
   if (!isValidMove(tetromino.matrix, tetromino.row, tetromino.col)) {
     tetromino.row--;
   }
+});
+
+// 터치 이벤트 핸들러 추가
+const buttons = document.querySelectorAll('button');
+buttons.forEach(button => {
+  button.addEventListener('touchstart', function(e) {
+    e.preventDefault(); // 기본 동작 방지
+    this.click(); // 클릭 이벤트 시뮬레이션
+  });
 });
 
 const canvas = document.getElementById('game');
