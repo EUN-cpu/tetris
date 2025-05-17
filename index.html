@@ -8,16 +8,17 @@
   html, body {
     height: 100%;
     margin: 0;
-    padding: 20px;
+    padding: 10px;
   }
 
   body {
     background: black;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;
+    min-height: 100vh;
   }
 
   canvas {
@@ -27,6 +28,7 @@
     max-width: 640px;
     min-width: 320px;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    margin: 0 auto;
   }
 
   .controls {
@@ -99,29 +101,29 @@
     }
 
     button {
-      width: 70px;
-      height: 70px;
-      font-size: 28px;
+      width: 60px;
+      height: 60px;
+      font-size: 24px;
     }
 
     #highScores {
-      max-height: 200px;
-      font-size: 16px;
+      max-height: 300px;
+      font-size: 18px;
     }
 
     #nameInput input {
       width: 100%;
-      max-width: 300px;
-      font-size: 18px;
-      padding: 10px;
+      max-width: 280px;
+      font-size: 16px;
+      padding: 8px;
     }
 
     h2 {
-      font-size: 24px;
+      font-size: 28px;
     }
 
     p {
-      font-size: 18px;
+      font-size: 16px;
     }
   }
 
@@ -130,44 +132,44 @@
     body {
       flex-direction: row;
       justify-content: center;
-      gap: 40px;
+      gap: 30px;
     }
 
     .controls {
       flex-direction: row;
-      gap: 20px;
+      gap: 15px;
     }
 
     button {
-      width: 80px;
-      height: 80px;
-      font-size: 32px;
+      width: 70px;
+      height: 70px;
+      font-size: 28px;
     }
 
     #highScores {
-      max-height: 300px;
-      font-size: 20px;
+      max-height: 350px;
+      font-size: 22px;
     }
 
     #nameInput input {
       width: 100%;
-      max-width: 400px;
-      font-size: 22px;
-      padding: 12px;
+      max-width: 350px;
+      font-size: 20px;
+      padding: 10px;
     }
 
     h2 {
-      font-size: 32px;
+      font-size: 30px;
     }
 
     p {
-      font-size: 24px;
+      font-size: 20px;
     }
   }
   </style>
 </head>
 <body>
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 30px; width: 100%; max-width: 1200px;">
+  <div style="display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; max-width: 1200px;">
     <div>
       <canvas width="320" height="640" id="game"></canvas>
       <div class="controls">
@@ -181,7 +183,7 @@
         </div>
       </div>
     </div>
-    <div style="color: white; width: 100%; max-width: 500px; text-align: center; padding: 20px; background: rgba(0, 0, 0, 0.5); border-radius: 15px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);">
+    <div style="color: white; width: 100%; max-width: 500px; text-align: center; padding: 15px; background: rgba(0, 0, 0, 0.5); border-radius: 15px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);">
       <h2 style="margin-bottom: 20px;">직트리스 ver2.1</h2>
       <p style="margin-bottom: 15px;">Current Score: <span id="score">0</span></p>
       <button id="playAgain" style="margin-bottom: 20px; padding: 8px 16px;">Play Again</button>
