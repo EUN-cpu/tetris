@@ -25,8 +25,8 @@
     border: 2px solid white;
     width: 100%;
     height: auto;
-    max-width: 640px;
-    min-width: 320px;
+    max-width: 480px;
+    min-width: 240px;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
     margin: 0 auto;
   }
@@ -454,31 +454,103 @@ function loop() {
   }
 }
 
-// Add button controls
-document.getElementById('left').addEventListener('click', function() {
+// Add button controls with repeat functionality
+let buttonTimeouts = {};
+const REPEAT_DELAY = 300; // 300ms delay before repeat
+const REPEAT_INTERVAL = 100; // 100ms between repeats
+
+function handleButtonDown(buttonId, action) {
+  buttonTimeouts[buttonId] = setTimeout(() => {
+    action();
+    buttonTimeouts[buttonId] = setInterval(action, REPEAT_INTERVAL);
+  }, REPEAT_DELAY);
+}
+
+function handleButtonUp(buttonId) {
+  if (buttonTimeouts[buttonId]) {
+    clearInterval(buttonTimeouts[buttonId]);
+    clearTimeout(buttonTimeouts[buttonId]);
+    delete buttonTimeouts[buttonId];
+  }
+}
+
+// Left button
+const leftButton = document.getElementById('left');
+leftButton.addEventListener('mousedown', function() {
   if (gameOver) return;
   tetromino.col--;
   if (!isValidMove(tetromino.matrix, tetromino.row, tetromino.col)) {
     tetromino.col++;
+    return;
   }
+  handleButtonDown('left', () => {
+    tetromino.col--;
+    if (!isValidMove(tetromino.matrix, tetromino.row, tetromino.col)) {
+      tetromino.col++;
+      return;
+    }
+  });
 });
+leftButton.addEventListener('mouseup', () => handleButtonUp('left'));
+leftButton.addEventListener('mouseleave', () => handleButtonUp('left'));
 
-document.getElementById('right').addEventListener('click', function() {
+// Right button
+const rightButton = document.getElementById('right');
+rightButton.addEventListener('mousedown', function() {
   if (gameOver) return;
   tetromino.col++;
   if (!isValidMove(tetromino.matrix, tetromino.row, tetromino.col)) {
     tetromino.col--;
+    return;
   }
+  handleButtonDown('right', () => {
+    tetromino.col++;
+    if (!isValidMove(tetromino.matrix, tetromino.row, tetromino.col)) {
+      tetromino.col--;
+      return;
+    }
+  });
 });
+rightButton.addEventListener('mouseup', () => handleButtonUp('right'));
+rightButton.addEventListener('mouseleave', () => handleButtonUp('right'));
 
-document.getElementById('rotate').addEventListener('click', function(e) {
-  e.preventDefault(); // 기본 동작 방지
+// Down button
+const downButton = document.getElementById('drop');
+downButton.addEventListener('mousedown', function() {
+  if (gameOver) return;
+  tetromino.row++;
+  if (!isValidMove(tetromino.matrix, tetromino.row, tetromino.col)) {
+    tetromino.row--;
+    return;
+  }
+  handleButtonDown('down', () => {
+    tetromino.row++;
+    if (!isValidMove(tetromino.matrix, tetromino.row, tetromino.col)) {
+      tetromino.row--;
+      return;
+    }
+  });
+});
+downButton.addEventListener('mouseup', () => handleButtonUp('down'));
+downButton.addEventListener('mouseleave', () => handleButtonUp('down'));
+
+// Rotate button
+const rotateButton = document.getElementById('rotate');
+rotateButton.addEventListener('mousedown', function() {
   if (gameOver) return;
   const rotated = rotate(tetromino.matrix);
   if (isValidMove(rotated, tetromino.row, tetromino.col)) {
     tetromino.matrix = rotated;
   }
+  handleButtonDown('rotate', () => {
+    const rotated = rotate(tetromino.matrix);
+    if (isValidMove(rotated, tetromino.row, tetromino.col)) {
+      tetromino.matrix = rotated;
+    }
+  });
 });
+rotateButton.addEventListener('mouseup', () => handleButtonUp('rotate'));
+rotateButton.addEventListener('mouseleave', () => handleButtonUp('rotate'));
 
 document.getElementById('drop').addEventListener('click', function(e) {
   e.preventDefault(); // 기본 동작 방지
