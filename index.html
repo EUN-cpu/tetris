@@ -25,26 +25,26 @@
     border: 2px solid white;
     width: 100%;
     height: auto;
-    max-width: 480px;
-    min-width: 240px;
+    max-width: 320px;
+    min-width: 160px;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
     margin: 0 auto;
   }
 
   .controls {
     display: flex;
-    gap: 15px;
-    margin-top: 20px;
+    gap: 10px;
+    margin-top: 15px;
     flex-wrap: wrap;
     justify-content: center;
   }
 
   button {
-    width: 60px;
-    height: 60px;
-    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
     border: none;
-    border-radius: 10px;
+    border-radius: 8px;
     background: #444;
     color: white;
     cursor: pointer;
@@ -95,16 +95,17 @@
 
     .controls {
       flex-direction: row;
-      gap: 10px;
+      gap: 5px;
       justify-content: center;
       flex-wrap: wrap;
     }
 
     button {
-      width: 60px;
-      height: 60px;
-      font-size: 24px;
+      width: 35px;
+      height: 35px;
+      font-size: 14px;
     }
+  }
 
     #highScores {
       max-height: 300px;
@@ -473,6 +474,71 @@ function handleButtonUp(buttonId) {
     delete buttonTimeouts[buttonId];
   }
 }
+
+// Define button actions
+const buttonActions = {
+  left: () => {
+    if (gameOver) return;
+    tetromino.col--;
+    if (!isValidMove(tetromino.matrix, tetromino.cellRow, tetromino.col)) {
+      tetromino.col++;
+      return;
+    }
+    update();
+  },
+  right: () => {
+    if (gameOver) return;
+    tetromino.col++;
+    if (!isValidMove(tetromino.matrix, tetromino.cellRow, tetromino.col)) {
+      tetromino.col--;
+      return;
+    }
+    update();
+  },
+  down: () => {
+    if (gameOver) return;
+    tetromino.cellRow++;
+    if (!isValidMove(tetromino.matrix, tetromino.cellRow, tetromino.col)) {
+      tetromino.cellRow--;
+      return;
+    }
+    update();
+  },
+  rotate: () => {
+    if (gameOver) return;
+    const rotated = rotate(tetromino.matrix);
+    if (isValidMove(rotated, tetromino.cellRow, tetromino.col)) {
+      tetromino.matrix = rotated;
+      update();
+    }
+  }
+};
+
+// Add touch event handlers
+function handleTouchStart(e) {
+  const target = e.target;
+  if (target.tagName === 'BUTTON') {
+    target.classList.add('active');
+    const action = buttonActions[target.id];
+    if (action) {
+      action();
+      handleButtonDown(target.id, action);
+    }
+  }
+}
+
+function handleTouchEnd(e) {
+  const target = e.target;
+  if (target.tagName === 'BUTTON') {
+    target.classList.remove('active');
+    handleButtonUp(target.id);
+  }
+}
+
+// Add touch event listeners
+document.addEventListener('touchstart', handleTouchStart);
+document.addEventListener('touchend', handleTouchEnd);
+document.addEventListener('touchcancel', handleTouchEnd);
 
 // Left button
 const leftButton = document.getElementById('left');
